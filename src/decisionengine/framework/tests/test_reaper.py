@@ -1,6 +1,7 @@
 '''Fixture based DE Server for the reaper tests'''
 # pylint: disable=redefined-outer-name
 
+
 import pytest
 
 from decisionengine.framework.tests.fixtures import (  # noqa: F401
