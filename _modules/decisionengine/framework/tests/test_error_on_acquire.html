@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>decisionengine.framework.util.reaper &mdash; decisionengine 1.7.0rc0.post124+gfb5b177 documentation</title>
+  <title>decisionengine.framework.tests.test_error_on_acquire &mdash; decisionengine 1.7.0rc0.post124+gfb5b177 documentation</title>
   
 
   
@@ -148,7 +148,7 @@
         
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
         
-      <li>decisionengine.framework.util.reaper</li>
+      <li>decisionengine.framework.tests.test_error_on_acquire</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -163,39 +163,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for decisionengine.framework.util.reaper</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python3</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">A stand-alone script purges data in database older than specified</span>
-<span class="sd">in configuration. Configuration file has to have this bit added:</span>
-<span class="sd">   {</span>
-<span class="sd">     &quot;dataspace&quot; : { &quot;retention_interval_in_days&quot; : 365,</span>
-<span class="sd">                      &quot;datasource&quot; :  { ... }</span>
-<span class="sd">                   }</span>
-<span class="sd">    }</span>
-<span class="sd">Can be used in a cron job.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pwd</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+  <h1>Source code for decisionengine.framework.tests.test_error_on_acquire</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">import</span> <span class="nn">decisionengine.framework.config.policies</span> <span class="k">as</span> <span class="nn">policies</span>
-<span class="kn">from</span> <span class="nn">decisionengine.framework.dataspace.maintain</span> <span class="kn">import</span> <span class="n">Reaper</span>
-<span class="kn">from</span> <span class="nn">decisionengine.framework.config.ValidConfig</span> <span class="kn">import</span> <span class="n">ValidConfig</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../../code/decisionengine.framework.util.html#decisionengine.framework.util.reaper.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>  <span class="c1"># pragma: no cover</span>
-    <span class="n">username</span> <span class="o">=</span> <span class="n">pwd</span><span class="o">.</span><span class="n">getpwuid</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">())</span><span class="o">.</span><span class="n">pw_name</span>
-    <span class="k">if</span> <span class="n">username</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="s1">&#39;decisionengine&#39;</span><span class="p">]:</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;User &#39;</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&#39; is not allowed to run this script.&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">decisionengine.framework.tests.fixtures</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">PG_DE_DB_WITH_SCHEMA</span><span class="p">,</span>
+    <span class="n">PG_PROG</span><span class="p">,</span>
+    <span class="n">DEServer</span><span class="p">,</span>
+    <span class="n">TEST_CONFIG_PATH</span><span class="p">,</span>
+<span class="p">)</span>
 
-    <span class="n">config_file</span> <span class="o">=</span> <span class="n">policies</span><span class="o">.</span><span class="n">global_config_file</span><span class="p">()</span>
-    <span class="n">global_config</span> <span class="o">=</span> <span class="n">ValidConfig</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
-    <span class="n">reaper</span> <span class="o">=</span> <span class="n">Reaper</span><span class="p">(</span><span class="n">global_config</span><span class="p">)</span>
-    <span class="n">reaper</span><span class="o">.</span><span class="n">reap</span><span class="p">()</span></div>
+<span class="n">_channel_config_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TEST_CONFIG_PATH</span><span class="p">,</span> <span class="s2">&quot;test-error-on-acquire&quot;</span><span class="p">)</span>  <span class="c1"># noqa: F405</span>
+<span class="n">deserver</span> <span class="o">=</span> <span class="n">DEServer</span><span class="p">(</span>
+    <span class="n">conf_path</span><span class="o">=</span><span class="n">TEST_CONFIG_PATH</span><span class="p">,</span> <span class="n">channel_conf_path</span><span class="o">=</span><span class="n">_channel_config_dir</span>
+<span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
+<div class="viewcode-block" id="test_source_only_channel"><a class="viewcode-back" href="../../../../code/decisionengine.framework.tests.html#decisionengine.framework.tests.test_error_on_acquire.test_source_only_channel">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">usefixtures</span><span class="p">(</span><span class="s2">&quot;deserver&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_source_only_channel</span><span class="p">(</span><span class="n">deserver</span><span class="p">):</span>
+    <span class="c1"># The following &#39;block-while&#39; call will be unnecessary once the</span>
+    <span class="c1"># deserver fixture can reliably block when no workers have yet</span>
+    <span class="c1"># been constructed.</span>
+    <span class="n">deserver</span><span class="o">.</span><span class="n">de_client_run_cli</span><span class="p">(</span><span class="s2">&quot;--block-while&quot;</span><span class="p">,</span> <span class="s2">&quot;BOOT&quot;</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">deserver</span><span class="o">.</span><span class="n">de_client_run_cli</span><span class="p">(</span><span class="s1">&#39;--stop-channel&#39;</span><span class="p">,</span> <span class="s1">&#39;error_on_acquire&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;Channel error_on_acquire stopped cleanly.&quot;</span> <span class="o">==</span> <span class="n">output</span></div>
 </pre></div>
 
            </div>
