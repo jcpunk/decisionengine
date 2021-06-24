@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>decisionengine.framework.modules package &mdash; decisionengine 1.7.0rc0.post72+g5eace9d documentation</title>
+  <title>decisionengine.framework.modules package &mdash; decisionengine 1.7.0rc0.post115+g3b104eb documentation</title>
   
 
   
@@ -88,14 +88,10 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes/release_notes_1.6.html">Release 1.6.1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes/release_notes_1.6.html">Release 1.6.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes/release_notes_1.6.html#release-1-6-1">Release 1.6.1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../release_notes/release_notes_1.6.html#release-1-6-0">Release 1.6.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes/release_notes_1.5.html">Release 1.5.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes/release_notes_1.4.html">Release 1.4.1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes/release_notes_1.4.html#release-1-4-0">Release 1.4.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes/release_notes_1.3.html">Release 1.3.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes/release_notes_1.2.html">Release 1.2.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes/release_notes_1.1.html">Release 1.1.0</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../jenkins.html">Decisionengine CI with Jenkins pipeline</a></li>
@@ -207,6 +203,7 @@
 <li class="toctree-l2"><a class="reference internal" href="decisionengine.framework.modules.tests.html#module-decisionengine.framework.modules.tests.test_Transform">decisionengine.framework.modules.tests.test_Transform module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decisionengine.framework.modules.tests.html#module-decisionengine.framework.modules.tests.test_de_logger">decisionengine.framework.modules.tests.test_de_logger module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decisionengine.framework.modules.tests.html#module-decisionengine.framework.modules.tests.test_module_decorators">decisionengine.framework.modules.tests.test_module_decorators module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decisionengine.framework.modules.tests.html#module-decisionengine.framework.modules.tests.test_translate_product_name">decisionengine.framework.modules.tests.test_translate_product_name module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decisionengine.framework.modules.tests.html#module-decisionengine.framework.modules.tests">Module contents</a></li>
 </ul>
 </li>
@@ -568,6 +565,20 @@ Set stream logging for logger.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="decisionengine.framework.modules.print_description.spec_if_main">
 <span class="sig-prename descclassname"><span class="pre">decisionengine.framework.modules.print_description.</span></span><span class="sig-name descname"><span class="pre">spec_if_main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/decisionengine/framework/modules/print_description.html#spec_if_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#decisionengine.framework.modules.print_description.spec_if_main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-decisionengine.framework.modules.translate_product_name">
+<span id="decisionengine-framework-modules-translate-product-name-module"></span><h2>decisionengine.framework.modules.translate_product_name module<a class="headerlink" href="#module-decisionengine.framework.modules.translate_product_name" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="decisionengine.framework.modules.translate_product_name.translate">
+<span class="sig-prename descclassname"><span class="pre">decisionengine.framework.modules.translate_product_name.</span></span><span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/decisionengine/framework/modules/translate_product_name.html#translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#decisionengine.framework.modules.translate_product_name.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Break apart the string ‘old -&gt; new’ into a tuple (‘old’, ‘new’)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="decisionengine.framework.modules.translate_product_name.translate_all">
+<span class="sig-prename descclassname"><span class="pre">decisionengine.framework.modules.translate_product_name.</span></span><span class="sig-name descname"><span class="pre">translate_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">specs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/decisionengine/framework/modules/translate_product_name.html#translate_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#decisionengine.framework.modules.translate_product_name.translate_all" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>

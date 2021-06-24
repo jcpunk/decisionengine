@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>decisionengine.framework.dataspace.datasources.postgresql &mdash; decisionengine 1.7.0rc0.post72+g5eace9d documentation</title>
+  <title>decisionengine.framework.dataspace.datasources.postgresql &mdash; decisionengine 1.7.0rc0.post115+g3b104eb documentation</title>
   
 
   
@@ -86,14 +86,10 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../release_notes/release_notes_1.6.html">Release 1.6.1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../release_notes/release_notes_1.6.html">Release 1.6.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../release_notes/release_notes_1.6.html#release-1-6-1">Release 1.6.1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../release_notes/release_notes_1.6.html#release-1-6-0">Release 1.6.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../release_notes/release_notes_1.5.html">Release 1.5.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../release_notes/release_notes_1.4.html">Release 1.4.1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../release_notes/release_notes_1.4.html#release-1-4-0">Release 1.4.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../release_notes/release_notes_1.3.html">Release 1.3.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../release_notes/release_notes_1.2.html">Release 1.2.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../release_notes/release_notes_1.1.html">Release 1.1.0</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../jenkins.html">Decisionengine CI with Jenkins pipeline</a></li>
@@ -302,7 +298,11 @@
 <div class="viewcode-block" id="Postgresql.create_tables"><a class="viewcode-back" href="../../../../../code/decisionengine.framework.dataspace.datasources.html#decisionengine.framework.dataspace.datasources.postgresql.Postgresql.create_tables">[docs]</a>    <span class="k">def</span> <span class="nf">create_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Postgresql.store_taskmanager"><a class="viewcode-back" href="../../../../../code/decisionengine.framework.dataspace.datasources.html#decisionengine.framework.dataspace.datasources.postgresql.Postgresql.store_taskmanager">[docs]</a>    <span class="k">def</span> <span class="nf">store_taskmanager</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">taskmanager_id</span><span class="p">):</span>
+<div class="viewcode-block" id="Postgresql.store_taskmanager"><a class="viewcode-back" href="../../../../../code/decisionengine.framework.dataspace.datasources.html#decisionengine.framework.dataspace.datasources.postgresql.Postgresql.store_taskmanager">[docs]</a>    <span class="k">def</span> <span class="nf">store_taskmanager</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">taskmanager_id</span><span class="p">,</span> <span class="n">datestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">datestamp</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_returning_result</span><span class="p">(</span><span class="s2">&quot;INSERT INTO taskmanager (name, taskmanager_id, datestamp) values (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                                                 <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">taskmanager_id</span><span class="p">,</span> <span class="n">datestamp</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sequence_id&#39;</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_returning_result</span><span class="p">(</span><span class="s2">&quot;INSERT INTO taskmanager (name, taskmanager_id) values (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
                                              <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">taskmanager_id</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sequence_id&#39;</span><span class="p">)</span></div>
 
@@ -349,7 +349,6 @@
                 <span class="n">SELECT_TASKMANAGERS</span> <span class="o">+=</span> <span class="s2">&quot; AND &quot;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">SELECT_TASKMANAGERS</span> <span class="o">+=</span> <span class="s2">&quot; WHERE &quot;</span>
-                <span class="n">have_where</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">SELECT_TASKMANAGERS</span> <span class="o">+=</span> <span class="s2">&quot; tm.datestamp &lt;=  &#39;&quot;</span> <span class="o">+</span> <span class="n">end_time</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_dictresult</span><span class="p">(</span><span class="n">SELECT_TASKMANAGERS</span> <span class="o">+</span>
@@ -395,6 +394,7 @@
                       <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
                       <span class="s1">&#39;create_time&#39;</span><span class="p">:</span> <span class="n">header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;create_time&#39;</span><span class="p">),</span>
                       <span class="s1">&#39;scheduled_create_time&#39;</span><span class="p">:</span> <span class="n">header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scheduled_create_time&#39;</span><span class="p">),</span>
+                      <span class="s1">&#39;expiration_time&#39;</span><span class="p">:</span> <span class="n">header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;expiration_time&#39;</span><span class="p">),</span>
                       <span class="s1">&#39;creator&#39;</span><span class="p">:</span> <span class="n">header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;creator&#39;</span><span class="p">),</span>
                       <span class="s1">&#39;schema_id&#39;</span><span class="p">:</span> <span class="n">header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;schema_id&#39;</span><span class="p">)</span>
                       <span class="p">})</span>
@@ -410,6 +410,15 @@
 
 <div class="viewcode-block" id="Postgresql.update"><a class="viewcode-back" href="../../../../../code/decisionengine.framework.dataspace.datasources.html#decisionengine.framework.dataspace.datasources.postgresql.Postgresql.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">taskmanager_id</span><span class="p">,</span> <span class="n">generation_id</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span>
                <span class="n">value</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">DataSource</span><span class="o">.</span><span class="n">header_table</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">DataSource</span><span class="o">.</span><span class="n">metadata_table</span><span class="p">,</span>
+                      <span class="n">ds</span><span class="o">.</span><span class="n">DataSource</span><span class="o">.</span><span class="n">dataproduct_table</span><span class="p">):</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">SELECT_QUERY</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="p">(</span><span class="n">taskmanager_id</span><span class="p">,</span> <span class="n">generation_id</span><span class="p">,</span> <span class="n">key</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="c1"># do not log stack trace, Exception thrown is handled by the caller</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;taskmanager_id=</span><span class="si">{}</span><span class="s2"> or generation_id=</span><span class="si">{}</span><span class="s2"> or key=</span><span class="si">{}</span><span class="s2"> not found in </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">taskmanager_id</span><span class="p">,</span> <span class="n">generation_id</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">table</span><span class="p">))</span>
 
         <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">            UPDATE </span><span class="si">{}</span><span class="s2"> SET value=</span><span class="si">%s</span><span class="s2"></span>
@@ -626,10 +635,6 @@
             <span class="k">except</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">Error</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
                 <span class="k">pass</span>
             <span class="k">raise</span>
-        <span class="k">except</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">Error</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">db</span><span class="p">:</span>
-                <span class="n">db</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
-            <span class="k">raise</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="nb">list</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">close</span> <span class="k">if</span> <span class="n">x</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">db</span><span class="p">)])</span></div>
 
@@ -652,10 +657,6 @@
                     <span class="n">db</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
             <span class="k">except</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">Error</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
                 <span class="k">pass</span>
-            <span class="k">raise</span>
-        <span class="k">except</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">Error</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">db</span><span class="p">:</span>
-                <span class="n">db</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
             <span class="k">raise</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="nb">list</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">close</span> <span class="k">if</span> <span class="n">x</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">db</span><span class="p">)])</span></div>
