@@ -1,5 +1,5 @@
 import importlib
-import logging
+import structlog
 
 __all__ = [
     "DataSpaceConfigurationError",
@@ -66,7 +66,8 @@ class DataSpace():
         :arg config: Configuration dictionary
         """
 
-        self.logger = logging.getLogger()
+        self.logger = structlog.getLogger("decision_engine")
+        self.logger = self.logger.bind(module=__name__.split(".")[-1])
         self.logger.debug('Initializing a dataspace')
 
         # Validate configuration
