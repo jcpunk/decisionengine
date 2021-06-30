@@ -22,7 +22,7 @@ deserver = DEServer(
 )  # pylint: disable=invalid-name
 
 
-@pytest.mark.timeout(20)
+@pytest.mark.timeout(85)
 @pytest.mark.usefixtures("deserver")
 def test_working_source_proxy(deserver):
     # The following 'block-while' call be unnecessary once the
@@ -34,6 +34,7 @@ def test_working_source_proxy(deserver):
     deserver.de_client_run_cli('--stop-channel', 'test_source_proxy')
     output = deserver.de_client_run_cli('--status')
     assert re.search("test_source_proxy", output, re.DOTALL) is None
+    raise ValueError('got here')
 
 
 _fail_channel_config_dir = os.path.join(TEST_CONFIG_PATH, 'test-failing-source-proxy')  # noqa: F405

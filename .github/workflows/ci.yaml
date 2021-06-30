@@ -12,12 +12,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 120
     strategy:
       matrix:
         python-version:
-          - '3.6'
-          - '3.9'
           - 'pypy-3.6'
 
     name: Python ${{ matrix.python-version }} unit tests
