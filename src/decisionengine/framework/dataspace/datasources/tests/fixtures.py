@@ -16,6 +16,9 @@ from decisionengine.framework.dataspace.datablock import Header, Metadata
 from decisionengine.framework.dataspace.datasources.postgresql import (
     Postgresql as Postgresql_datasource,
 )
+from decisionengine.framework.dataspace.datasources.sqlalchemy_ds import (
+    SQLAlchemyDS as SQLAlchemy_datasource
+)
 
 __all__ = [
     "DATABASES_TO_TEST",
@@ -37,7 +40,8 @@ PG_DE_DB_WITHOUT_SCHEMA = factories.postgresql(
     dbname="decisionengine",
 )
 
-DATABASES_TO_TEST = ("PG_DE_DB_WITH_SCHEMA",)
+DATABASES_TO_TEST = ("PG_DE_DB_WITH_SCHEMA", "SQLALCHEMY_PG_WITH_SCHEMA", "SQLALCHEMY_IN_MEMORY_SQLITE")
+DATABASES_TO_TEST = ("PG_DE_DB_WITH_SCHEMA", "SQLALCHEMY_PG_WITH_SCHEMA")
 
 
 @pytest.fixture
@@ -138,6 +142,8 @@ def datasource(request):
 
     if request.param == "PG_DE_DB_WITH_SCHEMA":
         my_ds = Postgresql_datasource(db_info)
+    else:
+        my_ds = SQLAlchemy_datasource(db_info)
 
     load_sample_data_into_datasource(my_ds)
 

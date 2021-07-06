@@ -9,7 +9,7 @@ __all__ = [
     "DataSpace",
 ]
 
-from decisionengine.framework.util.singleton import Singleton
+from decisionengine.framework.util.singleton import ScopedSingleton
 
 
 class DataSpaceConfigurationError(Exception):
@@ -40,7 +40,7 @@ class DataSpaceExistsError(Exception):
     pass
 
 
-class DataSourceLoader(metaclass=Singleton):
+class DataSourceLoader(metaclass=ScopedSingleton):
 
     _ds = None
 
