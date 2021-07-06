@@ -8,6 +8,8 @@ import zlib
 import structlog
 from collections import UserDict
 
+from sqlalchemy.exc import NoResultFound
+
 ###############################################################################
 # TODO:
 # 1) Need to make sure there are no race conditions
@@ -381,6 +383,9 @@ class DataBlock:
                                                    self.generation_id, key)
             value = ast.literal_eval(decompress(value))
         except KeyError:
+            self.logger.error(f"Did not get key '{key}' in datablock __getitem__")
+            value = default
+        except NoResultFound:
             self.logger.error(f"Did not get key '{key}' in datablock __getitem__")
             value = default
 

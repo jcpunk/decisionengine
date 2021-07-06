@@ -16,6 +16,9 @@ from decisionengine.framework.dataspace.datablock import Header, Metadata
 from decisionengine.framework.dataspace.datasources.postgresql import (
     Postgresql as Postgresql_datasource,
 )
+from decisionengine.framework.dataspace.datasources.sqlalchemy_ds import (
+    SQLAlchemyDS as SQLAlchemy_datasource
+)
 
 __all__ = [
     "DATABASES_TO_TEST",
@@ -23,7 +26,7 @@ __all__ = [
     "PG_DE_DB_WITH_SCHEMA",
     "PG_DE_DB_WITHOUT_SCHEMA",
     "SQLALCHEMY_PG_WITH_SCHEMA",
-    "SQLALCHEMY_IN_MEMORY_SQLITE",
+    "SQLALCHEMY_TEMPFILE_SQLITE",
     "datasource",
     "mock_data_block",
 ]
@@ -37,7 +40,7 @@ PG_DE_DB_WITHOUT_SCHEMA = factories.postgresql(
     dbname="decisionengine",
 )
 
-DATABASES_TO_TEST = ("PG_DE_DB_WITH_SCHEMA",)
+DATABASES_TO_TEST = ("PG_DE_DB_WITH_SCHEMA", "SQLALCHEMY_PG_WITH_SCHEMA", "SQLALCHEMY_TEMPFILE_SQLITE")
 
 
 @pytest.fixture
@@ -94,13 +97,14 @@ def SQLALCHEMY_PG_WITH_SCHEMA(request):
 
 
 @pytest.fixture
-def SQLALCHEMY_IN_MEMORY_SQLITE(request):
+def SQLALCHEMY_TEMPFILE_SQLITE(tmp_path):
     """
-    Setup an SQLite database in memory
+    Setup an SQLite database with the pytest tmp_path fixture.
     Then setup the SQLAlchemy style URL with that DB.
     The SQLAlchemyDS will create the schema as needed.
     """
-    yield {"url": "sqlite:///:memory:", "echo": True}
+    sqlite_file = tmp_path / "test.sqlite"
+    yield {"url": f"sqlite:///{sqlite_file}", "echo": True}
 
 @pytest.fixture(params=DATABASES_TO_TEST)
 def datasource(request):
@@ -138,6 +142,8 @@ def datasource(request):
 
     if request.param == "PG_DE_DB_WITH_SCHEMA":
         my_ds = Postgresql_datasource(db_info)
+    else:
+        my_ds = SQLAlchemy_datasource(db_info)
 
     load_sample_data_into_datasource(my_ds)
 
