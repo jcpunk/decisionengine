@@ -1,6 +1,6 @@
 import platform
 import time
-import logging
+import structlog
 
 import dbutils.pooled_db as pooled_db
 
@@ -123,7 +123,8 @@ class Postgresql(ds.DataSource):
 
     def __init__(self, config_dict):
         super().__init__(config_dict)
-        self.logger = logging.getLogger('decision_engine')
+        self.logger = structlog.getLogger('decision_engine')
+        self.logger = self.logger.bind(module=__name__.split(".")[-1])
         self.logger.debug('Initializing a Postgresql datasource')
 
         # account for differences between psycopg2 and psycopg2cffi
