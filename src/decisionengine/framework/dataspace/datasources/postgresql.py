@@ -55,9 +55,10 @@ WHERE foo.taskmanager_id=%s
 """
 
 SELECT_LAST_GENERATION_ID_BY_NAME = """
-SELECT max(generation_id)
-FROM dataproduct
-WHERE taskmanager_id = (select  max(sequence_id) from taskmanager where name = %s)
+SELECT max(dp.generation_id) as generation_id
+FROM dataproduct dp
+JOIN taskmanager tm ON dp.taskmanager_id=tm.sequence_id
+WHERE tm.name=%s
 """
 
 SELECT_LAST_GENERATION_ID_BY_NAME_AND_ID = """
@@ -453,7 +454,7 @@ class Postgresql(ds.DataSource):
             raise
         finally:
             try:
-                list([x.close if x else None for x in (cursor, db)])
+                list(x.close if x else None for x in (cursor, db))
             except psycopg2.Error:  # pragma: no cover
                 # do not log stack trace, Exception thrown is handled by the caller
                 pass
@@ -476,7 +477,7 @@ class Postgresql(ds.DataSource):
                 pass
             raise
         finally:
-            list([x.close if x else None for x in (cursor, db)])
+            list(x.close if x else None for x in (cursor, db))
 
     def _update_returning_result(self, query_string, values=None):
         db, cursor = None, None
@@ -499,7 +500,7 @@ class Postgresql(ds.DataSource):
                 pass
             raise
         finally:
-            list([x.close if x else None for x in (cursor, db)])
+            list(x.close if x else None for x in (cursor, db))
 
     def _insert(self, table_name_or_sql_query, record=None):
         try:

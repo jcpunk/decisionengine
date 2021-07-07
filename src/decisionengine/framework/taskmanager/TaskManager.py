@@ -137,11 +137,14 @@ class TaskManager:
         :arg global_config: global configuration
         """
         self.id = str(uuid.uuid4()).upper()
-        self.dataspace = dataspace.DataSpace(global_config)
-        self.data_block_t0 = datablock.DataBlock(self.dataspace, name, self.id, generation_id)  # my current data block
         self.name = name
         self.logger = structlog.getLogger(f"{self.name}")
         self.logger = self.logger.bind(module=__name__.split(".")[-1])
+        self.logger.debug(f"Creating DataSpace for taskmanager_name={self.name}")
+        self.dataspace = dataspace.DataSpace(global_config)
+        self.logger.debug(f"Creating DataBlock_t0 for taskmanager_name={self.name}")
+        self.data_block_t0 = datablock.DataBlock(self.dataspace, name, self.id, generation_id)  # my current data block
+        self.logger.debug(f"Creating Channel for taskmanager_name={self.name}")
         self.channel = Channel(channel_dict)
         self.state = ProcessingState()
         self.loglevel = multiprocessing.Value("i", logging.WARNING)
@@ -212,9 +215,12 @@ class TaskManager:
         while not self.state.should_stop():
             try:
                 self.decision_cycle()
+                with self.state.lock:
+                    if not self.state.should_stop():
+                        # If we are signaled to stop, don't override that state
+                        # otherwise the last decision_cycle completed without error
+                        self.state.set(State.STEADY)
                 if not self.state.should_stop():
-                    # the last decision_cycle completed without error
-                    self.state.set(State.STEADY)
                     self.wait_for_any(done_events)
             except Exception:  # pragma: no cover
                 self.logger.exception("Exception in the task manager main loop")
@@ -364,7 +370,7 @@ class TaskManager:
                 self.logger.info(f"Src {src.name} calling acquire")
                 data = src.worker.acquire()
                 Module.verify_products(src.worker, data)
-                self.logger.info(f"Src {src.name} acquire retuned")
+                self.logger.info(f"Src {src.name} acquire returned")
                 self.logger.info(f"Src {src.name} filling header")
                 if data:
                     t = time.time()
@@ -373,7 +379,7 @@ class TaskManager:
                     self.data_block_put(data, header, self.data_block_t0)
                     self.logger.info(f"Src {src.name} data block put done")
                 else:
-                    self.logger.warning(f"Src {src.name} acquire retuned no data")
+                    self.logger.warning(f"Src {src.name} acquire returned no data")
                 src.data_updated.set()
                 self.logger.info(f"Src {src.name} {src.module} finished cycle")
             except Exception:

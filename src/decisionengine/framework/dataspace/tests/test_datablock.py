@@ -4,6 +4,9 @@ import pytest
 
 from decisionengine.framework.dataspace.tests.fixtures import (  # noqa: F401
     PG_DE_DB_WITH_SCHEMA,
+    PG_DE_DB_WITHOUT_SCHEMA,
+    SQLALCHEMY_PG_WITH_SCHEMA,
+    SQLALCHEMY_IN_MEMORY_SQLITE,
     PG_PROG,
     DATABASES_TO_TEST,
     dataspace,
@@ -16,15 +19,16 @@ from decisionengine.framework.dataspace import datablock
 def test_DataBlock_constructor(dataspace):  # noqa: F811
     my_tm = dataspace.get_taskmanagers()[0]  # fetch one of our loaded examples
 
+    dblock = datablock.DataBlock(dataspace, my_tm["name"])
+    assert dblock.generation_id == 1
+
     dblock = datablock.DataBlock(dataspace, my_tm["name"], my_tm["taskmanager_id"])
     assert dblock.generation_id == 1
 
     dblock = datablock.DataBlock(dataspace, my_tm["name"], generation_id=1)
     assert dblock.generation_id == 1
 
-    dblock = datablock.DataBlock(
-        dataspace, my_tm["name"], my_tm["taskmanager_id"], sequence_id=1
-    )
+    dblock = datablock.DataBlock(dataspace, my_tm["name"], sequence_id=1)
     assert dblock.generation_id == 1
 
 
@@ -241,6 +245,17 @@ def test_Metadata_constructor(dataspace):  # noqa: F811
     )
     assert metadata.data["generation_time"] == genTime
     assert metadata.data["missed_update_count"] == missCount
+
+    with pytest.raises(datablock.InvalidMetadataError):
+        metadata = datablock.Metadata(
+            my_tm["taskmanager_id"],
+            state="NO SUCH STATE EXISTS",
+            generation_id=dataspace.get_last_generation_id(
+                my_tm["name"], my_tm["taskmanager_id"]
+            ),
+            generation_time=genTime,
+            missed_update_count=missCount,
+        )
 
 
 @pytest.mark.usefixtures("dataspace")

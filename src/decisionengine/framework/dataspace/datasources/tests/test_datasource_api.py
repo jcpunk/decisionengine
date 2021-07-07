@@ -11,6 +11,9 @@ from sqlalchemy.exc import NoResultFound
 
 from decisionengine.framework.dataspace.datasources.tests.fixtures import (  # noqa: F401
     PG_DE_DB_WITH_SCHEMA,
+    PG_DE_DB_WITHOUT_SCHEMA,
+    SQLALCHEMY_PG_WITH_SCHEMA,
+    SQLALCHEMY_IN_MEMORY_SQLITE,
     PG_PROG,
     DATABASES_TO_TEST,
     datasource,
@@ -324,7 +327,7 @@ def test_insert(datasource):  # noqa: F811
         primary_key,
         1,
         "sample_test_key",
-        "sample_test_value".encode(),
+        b"sample_test_value",
         header,
         metadata,
     )

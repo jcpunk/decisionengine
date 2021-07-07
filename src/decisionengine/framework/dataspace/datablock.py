@@ -213,15 +213,18 @@ class DataBlock:
             self.taskmanager_id = taskmanager_id
         else:
             self.taskmanager_id = ('%s' % uuid.uuid1()).upper()
+
         if sequence_id:
             self.sequence_id = sequence_id
         else:
-            self.sequence_id = self.store_taskmanager(name, taskmanager_id)
+            self.sequence_id = self.store_taskmanager(name, self.taskmanager_id)
+
         if generation_id:
             self.generation_id = generation_id
         else:
             self.generation_id = self.dataspace.get_last_generation_id(
                 name, taskmanager_id)
+
         self._keys = []
         self.lock = threading.Lock()
 
@@ -383,7 +386,7 @@ class DataBlock:
 
         if not value:
             self.logger.exception(f"No key '{key}' in datablock __getitem__")
-            raise KeyError
+            raise KeyError(f"No key '{key}' in datablock __getitem__")
 
         if value.get('pickled'):
             return_value = zloads(value.get('value'))

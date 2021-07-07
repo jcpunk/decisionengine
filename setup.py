@@ -28,7 +28,8 @@ runtime_require = ["jsonnet >= 0.17.0", "tabulate >= 0.8.7",
                    "numpy == 1.19.5; python_version <= '3.6'",
                    "numpy >= 1.19.5; python_version >= '3.7'",
                    "pandas == 1.1.5; python_version <= '3.6'",
-                   "pandas >= 1.1.5; python_version >= '3.7'",
+                   "pandas >= 1.1.5; python_version >= '3.7' and platform_python_implementation == 'CPython'",
+                   "pandas == 1.2.5; platform_python_implementation == 'PyPy'",  # For pypy3.7, try again on pypy3.8
                    "psycopg2-binary >= 2.8.6; platform_python_implementation == 'CPython'",  # noqa: E501
                    "psycopg2cffi >= 2.9.0; platform_python_implementation == 'PyPy'"]  # noqa: E501
 
@@ -36,7 +37,7 @@ runtime_require = ["jsonnet >= 0.17.0", "tabulate >= 0.8.7",
 devel_req = ["setuptools >= 51.2", "setuptools-scm >= 6.0.1",
              "setuptools-scm[toml] >= 6.0.1", "toml >= 0.10.2",
              "packaging >= 20.4",
-             "mock >= 4.0.3", "pytest >= 6.2.2", "pytest-cov >= 2.11.1",
+             "pytest >= 6.2.2", "pytest-cov >= 2.11.1",
              "pytest-flake8 >= 1.0.7", "pytest-postgresql >= 3.0.0",
              "pytest-timeout >= 1.4.2",
              "pre-commit >= 2.13.0",
