@@ -9,6 +9,7 @@ if this environment variable is not defined the ``DE-Config.py`` file from the `
 import argparse
 import enum
 import logging
+import structlog
 import signal
 import sys
 import pandas as pd
@@ -54,7 +55,6 @@ class DecisionEngine(socketserver.ThreadingMixIn,
                                                   logRequests=False,
                                                   requestHandler=RequestHandler)
 
-        self.logger = logging.getLogger("decision_engine")
         signal.signal(signal.SIGHUP, self.handle_sighup)
         self.workers = Workers()
         self.channel_config_loader = channel_config_loader
@@ -62,7 +62,9 @@ class DecisionEngine(socketserver.ThreadingMixIn,
         self.dataspace = dataspace.DataSpace(self.global_config)
         self.reaper = Reaper(self.global_config)
         self.startup_complete = Event()
-        self.logger.info("DecisionEngine started on {}".format(server_address))
+        self.logger = structlog.getLogger("decision_engine")
+        self.logger = self.logger.bind(module=__name__.split(".")[-1])
+        self.logger.info(f"DecisionEngine started on {server_address}")
 
     def get_logger(self):
         return self.logger
@@ -154,6 +156,7 @@ class DecisionEngine(socketserver.ThreadingMixIn,
             for ch, worker in workers.items():
                 if not worker.is_alive():
                     txt += f"Channel {ch} is in not active\n"
+                    self.logger.debug(f"Channel:{ch} is in not active when running rpc_print_product")
                     continue
 
                 produces = worker.get_produces()
@@ -162,7 +165,9 @@ class DecisionEngine(socketserver.ThreadingMixIn,
                     continue
                 found = True
                 txt += " Found in channel {}\n".format(ch)
+                self.logger.debug(f"Found channel:{ch} active when running rpc_print_product")
                 tm = self.dataspace.get_taskmanager(ch)
+                self.logger.debug(f"rpc_print_product - channel:{ch} taskmanager:{tm}")
                 try:
                     data_block = datablock.DataBlock(self.dataspace,
                                                      ch,
@@ -170,7 +175,9 @@ class DecisionEngine(socketserver.ThreadingMixIn,
                                                      sequence_id=tm['sequence_id'])
                     data_block.generation_id -= 1
                     df = data_block[product]
-                    df = pd.read_json(df.to_json())
+                    dfj = df.to_json()
+                    self.logger.debug(f"rpc_print_product - channel:{ch} task manager:{tm} datablock:{dfj}")
+                    df = pd.read_json(dfj)
                     dataframe_formatter = self._dataframe_to_table
                     if format == 'vertical':
                         dataframe_formatter = self._dataframe_to_vertical_tables
