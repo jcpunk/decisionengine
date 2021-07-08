@@ -54,7 +54,7 @@ class ProcessingState:
         self._cv = multiprocessing.Condition()
         self._lock = multiprocessing.RLock()
         self._state = multiprocessing.Value('i', allowed_state.value)
-        self.logger = structlog.getLogger()
+        self.logger = structlog.getLogger("decisionengine")
         self.logger = self.logger.bind(module=__name__.split(".")[-1])
 
     @property
