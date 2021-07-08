@@ -45,17 +45,14 @@ pylogconfig = {
         #                   "formatter": "plain",
         # },
         "de_file_debug": {
-            "class": "logging.StreamHandler",
             "level": "DEBUG",
             "formatter": "plain",
         },
         "de_file_info": {
-            "class": "logging.StreamHandler",
             "level": "INFO",
             "formatter": "plain",
         },
         "file_structlog_debug": {
-            "class": "logging.StreamHandler",
             "level": "DEBUG",
             "formatter": "for_JSON",
         },
@@ -66,7 +63,7 @@ pylogconfig = {
             "level": "DEBUG",
             "propagate": True,
         },
-        "decision_engine": {
+        "decisionengine": {
             "handlers": ["file_structlog_debug", "de_file_debug", "de_file_info"],
             "level": "DEBUG",
             "propagate": True,

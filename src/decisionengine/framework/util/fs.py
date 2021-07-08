@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import structlog
 
-logger = structlog.getLogger("decision_engine")
+logger = structlog.getLogger("decisionengine")
 logger = logger.bind(module=__name__.split(".")[-1])
 
 

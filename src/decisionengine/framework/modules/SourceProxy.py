@@ -31,7 +31,7 @@ class SourceProxy(Source.Source):
         self.data_keys = translate_all(config['Dataproducts'])
         self.retries = config.get('retries', RETRIES)
         self.retry_to = config.get('retry_timeout', RETRY_TO)
-        self.logger = structlog.getLogger("decision_engine")
+        self.logger = structlog.getLogger("decisionengine")
         self.logger = self.logger.bind(module=__name__.split(".")[-1])
 
         # Hack - it is possible for a subclass to declare @produces,

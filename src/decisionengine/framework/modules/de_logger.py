@@ -11,7 +11,7 @@ import decisionengine.framework.modules.logging_configDict as configDict
 
 MB = 1000000
 
-logger = structlog.getLogger("decision_engine")
+logger = structlog.getLogger("decisionengine")
 logger = logger.bind(module=__name__.split(".")[-1])
 
 
@@ -22,7 +22,7 @@ def set_logging(
     rotation_interval=1,
     max_backup_count=6,
     max_file_size=200 * MB,
-    log_file_name="/tmp/decision_engine_logs/decision_engine_log",
+    log_file_name="/tmp/decision_engine_logs/decisionengine.log",
 ):
     """
 
@@ -51,11 +51,12 @@ def set_logging(
         logger.debug('Reusing existing logging handlers')
         return None
 
-    logconf = copy.deepcopy(configDict.pylogconfig)
+    #logconf = copy.deepcopy(configDict.pylogconfig)
+    logconf = configDict.pylogconfig
 
-    logconf["handlers"]["de_file_debug"].update({"filename": "{}_debug".format(log_file_name)})
-    logconf["handlers"]["de_file_info"].update({"filename": "{}".format(log_file_name)})
-    logconf["handlers"]["file_structlog_debug"].update({"filename": "{}_structlog_debug".format(log_file_name)})
+    logconf["handlers"]["de_file_debug"].update({"filename": "{}_debug.log".format(log_file_name)})
+    logconf["handlers"]["de_file_info"].update({"filename": "{}.log".format(log_file_name)})
+    logconf["handlers"]["file_structlog_debug"].update({"filename": "{}_structlog_debug.log".format(log_file_name)})
 
     if file_rotate_by == "size":
         logconf["handlers"]["de_file_debug"].update(
@@ -111,7 +112,7 @@ def set_logging(
 
 def get_logger():
     """
-    get default logger - "decision_engine"
+    get default logger - "decisionengine"
     :rtype: :class:`logging.Logger` - rotating file logger
     """
     return logger

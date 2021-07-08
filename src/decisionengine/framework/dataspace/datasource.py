@@ -23,7 +23,7 @@ class DataSource(metaclass=abc.ABCMeta):  # pragma: no cover
         """
 
         self.config = config
-        self.logger = structlog.getLogger("decision_engine")
+        self.logger = structlog.getLogger("decisionengine")
         self.logger = self.logger.bind(module=__name__.split(".")[-1])
         self.logger.debug('Initializing a datasource')
 

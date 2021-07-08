@@ -12,7 +12,7 @@ class RuleEngine:
     def __init__(self, fact_names, rules_cfg):
         self.fact_lookup = FactLookup(fact_names, rules_cfg)
         self.rules = self.fact_lookup.sorted_rules(rules_cfg)
-        self.logger = structlog.getLogger("decision_engine")
+        self.logger = structlog.getLogger("decisionengine")
         self.logger = self.logger.bind(module=__name__.split(".")[-1])
 
     def execute(self, evaluated_facts):

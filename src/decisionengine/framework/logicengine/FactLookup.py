@@ -56,7 +56,7 @@ class FactLookup:
             for fact_name in rule_cfg.get("facts", []):
                 self.facts.setdefault(fact_name, []).append(rule_name)
 
-        self.logger = structlog.getLogger("decision_engine")
+        self.logger = structlog.getLogger("decisionengine")
         self.logger = self.logger.bind(module=__name__.split(".")[-1])
         self.logger.debug(f"Registered the following facts:\n{self.facts}")
 

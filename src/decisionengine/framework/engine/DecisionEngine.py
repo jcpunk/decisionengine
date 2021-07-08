@@ -62,7 +62,7 @@ class DecisionEngine(socketserver.ThreadingMixIn,
         self.dataspace = dataspace.DataSpace(self.global_config)
         self.reaper = Reaper(self.global_config)
         self.startup_complete = Event()
-        self.logger = structlog.getLogger("decision_engine")
+        self.logger = structlog.getLogger("decisionengine")
         self.logger = self.logger.bind(module=__name__.split(".")[-1])
         self.logger.info(f"DecisionEngine started on {server_address}")
 

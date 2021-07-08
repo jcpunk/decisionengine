@@ -1,7 +1,7 @@
 import socket
 import structlog
 
-logger = structlog.getLogger("decision_engine")
+logger = structlog.getLogger("decisionengine")
 logger = logger.bind(module=__name__.split(".")[-1])
 
 def get_random_port():

@@ -23,7 +23,7 @@ class Reaper():
         :arg config: Configuration dictionary
         """
         # Validate configuration
-        self.logger = structlog.getLogger("decision_engine")
+        self.logger = structlog.getLogger("decisionengine")
         self.logger = self.logger.bind(module=__name__.split(".")[-1])
         self.logger.debug('Initializing a reaper')
 

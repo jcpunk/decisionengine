@@ -14,7 +14,7 @@ __all__ = [
     "SingletonABC",
 ]
 
-logger = structlog.getLogger("decision_engine")
+logger = structlog.getLogger("decisionengine")
 logger = logger.bind(module=__name__.split(".")[-1])
 
 

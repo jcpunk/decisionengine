@@ -26,7 +26,7 @@ from decisionengine.framework.util.subclasses import all_subclasses
 _TRANSFORMS_TO = 300  # 5 minutes
 _DEFAULT_SCHEDULE = 300  # ""
 
-delogger = structlog.getLogger("decision_engine")
+delogger = structlog.getLogger("decisionengine")
 delogger = delogger.bind(module=__name__.split(".")[-1])
 
 
