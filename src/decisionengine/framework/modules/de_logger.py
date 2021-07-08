@@ -51,7 +51,6 @@ def set_logging(
         logger.debug('Reusing existing logging handlers')
         return None
 
-    #logconf = copy.deepcopy(configDict.pylogconfig)
     logconf = configDict.pylogconfig
 
     logconf["handlers"]["de_file_debug"].update({"filename": "{}_debug.log".format(log_file_name)})

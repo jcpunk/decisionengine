@@ -14,6 +14,8 @@ pre_chain = [
 ]
 
 
+global pylogconfig
+
 pylogconfig = {
     "version": 1,
     "disable_existing_loggers": False,

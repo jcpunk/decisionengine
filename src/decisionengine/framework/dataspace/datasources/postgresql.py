@@ -123,7 +123,7 @@ class Postgresql(ds.DataSource):
 
     def __init__(self, config_dict):
         super().__init__(config_dict)
-        self.logger = structlog.getLogger('decision_engine')
+        self.logger = structlog.getLogger('decisionengine')
         self.logger = self.logger.bind(module=__name__.split(".")[-1])
         self.logger.debug('Initializing a Postgresql datasource')
 

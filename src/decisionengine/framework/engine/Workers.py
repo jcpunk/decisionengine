@@ -66,7 +66,6 @@ class Worker(multiprocessing.Process):
         # so we can reuse it here and reduce duplication
         logger_rotate_by = self.logger_config.get("file_rotate_by", "size")
 
-        #logconf = copy.deepcopy(configDict.pylogconfig)
         logconf = configDict.pylogconfig
 
         if logger_rotate_by == "size":
