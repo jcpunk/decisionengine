@@ -1,7 +1,6 @@
 """
 Logger to use in all modules
 """
-import copy
 import os
 import logging
 import logging.handlers
