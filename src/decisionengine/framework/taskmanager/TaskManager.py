@@ -22,11 +22,13 @@ from decisionengine.framework.taskmanager.ProcessingState import State
 from decisionengine.framework.taskmanager.ProcessingState import ProcessingState
 from decisionengine.framework.taskmanager.module_graph import ensure_no_circularities
 from decisionengine.framework.util.subclasses import all_subclasses
+from decisionengine.framework.modules.de_logger import LOGGERNAME
+
 
 _TRANSFORMS_TO = 300  # 5 minutes
 _DEFAULT_SCHEDULE = 300  # ""
 
-delogger = structlog.getLogger("decisionengine")
+delogger = structlog.getLogger(LOGGERNAME)
 delogger = delogger.bind(module=__name__.split(".")[-1])
 
 

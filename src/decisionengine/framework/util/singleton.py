@@ -5,6 +5,8 @@ import structlog
 from threading import Lock
 from weakref import WeakValueDictionary
 
+from decisionengine.framework.modules.de_logger import LOGGERNAME
+
 LOCK = Lock()
 
 __all__ = [
@@ -14,7 +16,7 @@ __all__ = [
     "SingletonABC",
 ]
 
-logger = structlog.getLogger("decisionengine")
+logger = structlog.getLogger(LOGGERNAME)
 logger = logger.bind(module=__name__.split(".")[-1])
 
 

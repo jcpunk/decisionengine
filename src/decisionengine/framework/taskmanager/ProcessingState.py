@@ -24,6 +24,9 @@ import multiprocessing
 import structlog
 import threading
 
+from decisionengine.framework.modules.de_logger import LOGGERNAME
+
+
 class State(enum.Enum):
     BOOT = 0
     IDLE = 1
@@ -54,7 +57,7 @@ class ProcessingState:
         self._cv = multiprocessing.Condition()
         self._lock = multiprocessing.RLock()
         self._state = multiprocessing.Value('i', allowed_state.value)
-        self.logger = structlog.getLogger("decisionengine")
+        self.logger = structlog.getLogger(LOGGERNAME)
         self.logger = self.logger.bind(module=__name__.split(".")[-1])
 
     @property

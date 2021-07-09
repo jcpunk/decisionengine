@@ -5,11 +5,12 @@ import pytest
 import structlog
 
 import decisionengine.framework.modules.de_logger as de_logger
+from decisionengine.framework.modules.de_logger import LOGGERNAME
 
 
 @pytest.fixture
 def log_setup():
-    my_log = structlog.getLogger("decisionengine")
+    my_log = structlog.getLogger(LOGGERNAME)
 
     # make sure it is in a known "unconfigured state"
     while len(my_log.handlers) > 0:

@@ -1,4 +1,5 @@
 from decisionengine.framework.logicengine.Rule import Rule
+from decisionengine.framework.modules.de_logger import LOGGERNAME
 
 from toposort import toposort_flatten
 
@@ -56,7 +57,7 @@ class FactLookup:
             for fact_name in rule_cfg.get("facts", []):
                 self.facts.setdefault(fact_name, []).append(rule_name)
 
-        self.logger = structlog.getLogger("decisionengine")
+        self.logger = structlog.getLogger(LOGGERNAME)
         self.logger = self.logger.bind(module=__name__.split(".")[-1])
         self.logger.debug(f"Registered the following facts:\n{self.facts}")
 

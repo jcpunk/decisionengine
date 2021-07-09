@@ -10,7 +10,9 @@ import decisionengine.framework.modules.logging_configDict as configDict
 
 MB = 1000000
 
-logger = structlog.getLogger("decisionengine")
+LOGGERNAME = "decisionengine"
+
+logger = structlog.getLogger(LOGGERNAME)
 logger = logger.bind(module=__name__.split(".")[-1])
 
 

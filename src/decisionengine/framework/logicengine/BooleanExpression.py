@@ -13,6 +13,8 @@ import ast
 import structlog
 import re
 
+from decisionengine.framework.modules.de_logger import LOGGERNAME
+
 # If support for direct use of numpy and pandas functions is desired,
 # import the numpy and pandas modules and adjust the facts_globals:
 #   facts_globals.update(np=np, pd=pd)
@@ -21,7 +23,7 @@ import re
 _facts_globals = {}
 _re = re.compile(r"fail_on_error\s*\(\s*(.*)\s*\)")
 
-logger = structlog.getLogger("decisionengine")
+logger = structlog.getLogger(LOGGERNAME)
 logger = logger.bind(module=__name__.split(".")[-1])
 
 
