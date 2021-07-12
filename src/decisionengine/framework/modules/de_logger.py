@@ -11,6 +11,8 @@ import decisionengine.framework.modules.logging_configDict as configDict
 
 MB = 1000000
 
+LOGGERNAME = "decision_engine"
+
 logger = structlog.getLogger("decision_engine")
 logger = logger.bind(module=__name__.split(".")[-1])
 
